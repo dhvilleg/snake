@@ -1,3 +1,7 @@
+import concurrent
+import time
+
+import keyboard
 import readchar
 import os
 import random
@@ -21,8 +25,11 @@ def drawMap():
     my_snake_tail = []
     tail_length = 0
 
-    while direction != "z":
+    eval_direction = "d"
+
+    while eval_direction != "z":
         clearConsole()
+
         print("+" + "-" * (WIDTH * 3) + "" + "+")
 
         for my_position_y in range(HEIGHT):
@@ -60,26 +67,46 @@ def drawMap():
 
         print("+" + "-" * (WIDTH * 3) + "" + "+")
 
-        direction = readchar.readchar().decode()
-        if direction == "w":
+        if eval_direction == "w":
             my_snake_tail.append(my_pos_in_list.copy())
             my_pos_in_list[1] = my_pos_in_list[1] - 1
             my_pos_in_list[1] %= HEIGHT
-        elif direction == "s":
+        elif eval_direction == "s":
             my_snake_tail.append(my_pos_in_list.copy())
             my_pos_in_list[1] = my_pos_in_list[1] + 1
             my_pos_in_list[1] %= HEIGHT
-        elif direction == "d":
+        elif eval_direction == "d":
             my_snake_tail.append(my_pos_in_list.copy())
             my_pos_in_list[0] = my_pos_in_list[0] + 1
             my_pos_in_list[0] %= WIDTH
-        elif direction == "a":
+        elif eval_direction == "a":
             my_snake_tail.append(my_pos_in_list.copy())
             my_pos_in_list[0] = my_pos_in_list[0] - 1
             my_pos_in_list[0] %= WIDTH
-        if my_pos_in_list in my_snake_tail[-tail_length:]:
+
+        if keyboard.is_pressed('w'):
+
+            eval_direction = "w"
+        elif keyboard.is_pressed('s'):
+
+            eval_direction = "s"
+        elif keyboard.is_pressed('d'):
+
+            eval_direction = "d"
+        elif keyboard.is_pressed('a'):
+
+            eval_direction = "a"
+        elif keyboard.is_pressed('z'):
+
+            eval_direction = "z"
+
+        if my_pos_in_list in my_snake_tail[-tail_length:] and tail_length != 0:
             print("Juego Terminado, has recogido {} comiditas ".format(tail_length))
-            direction = "z"
+            eval_direction = "z"
+
+        time.sleep(0.05)
+
+
 
 
 
